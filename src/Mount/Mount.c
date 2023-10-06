@@ -8061,7 +8061,7 @@ BOOL CALLBACK MainDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 					mountOptions.SkipCachedPasswords = FALSE;
 					bPrebootPasswordDlgMode = FALSE;
 
-					if (GetAsyncKeyState (VK_CONTROL) < 0)
+					if (GetAsyncKeyState(VK_SHIFT) < 0 || GetAsyncKeyState (VK_CONTROL) < 0)
 					{
 						/* Priority is given to command line parameters
 						 * Default values used only when nothing specified in command line
@@ -12494,7 +12494,7 @@ void MountSelectedVolume (HWND hwndDlg, BOOL mountWithOptions, BOOL skipCachedPa
 		mountOptions.SkipCachedPasswords = skipCachedPasswords;
 		bPrebootPasswordDlgMode = FALSE;
 
-		if (mountWithOptions || GetAsyncKeyState (VK_CONTROL) < 0)
+		if (mountWithOptions || GetAsyncKeyState(VK_SHIFT) < 0 || GetAsyncKeyState (VK_CONTROL) < 0)
 		{
 			/* Priority is given to command line parameters
 			 * Default values used only when nothing specified in command line
