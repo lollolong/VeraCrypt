@@ -456,12 +456,13 @@ static void DisableSplitButton(HWND hwndDlg, int buttonId)
 	}
 }
 
-static HMENU CreateMountNoCacheDropdownMenu()
+static HMENU CreateMountDropdownMenu()
 {
 	HMENU hmenu = CreatePopupMenu();
 
 	// add menu items
 	AppendMenu(hmenu, MF_STRING, IDM_MOUNIT_NO_CACHE, GetString("IDM_MOUNT_NO_CACHE"));
+	AppendMenu(hmenu, MF_STRING, IDM_MOUNT_VOLUME_OPTIONS, GetString("IDM_MOUNT_VOLUME_OPTIONS"));
 
 	return hmenu;
 }
@@ -8115,7 +8116,7 @@ BOOL CALLBACK MainDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 			if (pnmh->idFrom == IDOK && pnmh->code == BCN_DROPDOWN)
 			{
 				// Create a popup menu for the split button
-				HMENU hmenu = CreateMountNoCacheDropdownMenu();
+				HMENU hmenu = CreateMountDropdownMenu();
 				HandleMountButtonDropdown(pnmh->hwndFrom, hwndDlg, hmenu);
 				DestroyMenu(hmenu);
 			}
