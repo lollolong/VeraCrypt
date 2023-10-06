@@ -203,8 +203,8 @@ ifeq "$(shell uname -s)" "Linux"
 		# GCC version below 4.8 support minimal C++11 features through the switch -std=c++0x
 		CXXFLAGS += -std=c++0x
 	else ifeq ($(GCC_VERSION), 408)
-		# GCC version 4.8 supports C++11 features through the switch -std=gnu++11
-		CXXFLAGS += -std=gnu++11
+		# GCC version 4.8 supports C++11 features through the switch -std=c++11
+		CXXFLAGS += -std=c++11
 	else ifeq ($(shell expr $(GCC_VERSION) \>= 1100), 1)
 		# GNU GCC version 11 and higher compile with -std=gnu++17 by default
 		# which breaks "byte" definitions in Crypto++ library. So set -std=gnu++14 instead.
@@ -303,6 +303,8 @@ ifeq "$(shell uname -s)" "Darwin"
 	CC := gcc
 	CXX := g++
 
+	GCC_GTEQ_430 := 1
+
 	C_CXX_FLAGS += -DTC_UNIX -DTC_BSD -DTC_MACOSX -mmacosx-version-min=$(VC_OSX_TARGET) -isysroot $(VC_OSX_SDK_PATH)
 	LFLAGS += -mmacosx-version-min=$(VC_OSX_TARGET) -Wl,-syslibroot $(VC_OSX_SDK_PATH)
 	WX_CONFIGURE_FLAGS += --with-macosx-version-min=$(VC_OSX_TARGET) --with-macosx-sdk=$(VC_OSX_SDK_PATH)
@@ -381,6 +383,8 @@ ifeq "$(shell uname -s)" "FreeBSD"
 	
 	CC := cc
 	CXX := c++
+
+	GCC_GTEQ_430 := 1
 	
 	ifeq "$(TC_BUILD_CONFIG)" "Release"
 		C_CXX_FLAGS += -fdata-sections -ffunction-sections -fpie
@@ -440,6 +444,8 @@ ifeq "$(shell uname -s)" "OpenBSD"
 
 	CC := cc
 	CXX := c++
+
+	GCC_GTEQ_430 := 1
 
 	ifeq "$(TC_BUILD_CONFIG)" "Release"
 		C_CXX_FLAGS += -fdata-sections -ffunction-sections -fpie
