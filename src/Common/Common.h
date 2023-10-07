@@ -94,6 +94,7 @@ typedef struct
 	wchar_t Label[33]; /* maximum label length is 32 for NTFS and 11 for FAT32 */
 	BOOL DisableMountManager;
 	BOOL SkipCachedPasswords;
+	BOOL BitlockerDriveIcon;
 } MountOptions;
 
 #endif

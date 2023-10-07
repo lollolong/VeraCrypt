@@ -397,6 +397,7 @@ void OpenVolumeExplorerWindow (int driveNo);
 static BOOL CALLBACK CloseVolumeExplorerWindowsEnum( HWND hwnd, LPARAM driveNo);
 BOOL CloseVolumeExplorerWindows (HWND hwnd, int driveNo);
 BOOL UpdateDriveCustomLabel (int driveNo, wchar_t* effectiveLabel, BOOL bSetValue);
+BOOL UpdateDriveIcon (int driveNo, BOOL bSetIcon);
 BOOL CheckCapsLock (HWND hwnd, BOOL quiet);
 BOOL CheckFileExtension (wchar_t *fileName);
 void CorrectFileName (wchar_t* fileName);

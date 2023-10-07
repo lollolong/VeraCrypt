@@ -1039,6 +1039,8 @@ void LoadSettingsAndCheckModified (HWND hwndDlg, BOOL bOnlyCheckModified, BOOL* 
 
 	ConfigReadCompareInt ("UseLegacyMaxPasswordLength", FALSE, &bUseLegacyMaxPasswordLength, bOnlyCheckModified, pbSettingsModified);
 
+	ConfigReadCompareInt ("BitlockerDriveIcon", FALSE, &defaultMountOptions.BitlockerDriveIcon, bOnlyCheckModified, pbSettingsModified);
+
 	ConfigReadCompareInt ("MountVolumesRemovable", FALSE, &defaultMountOptions.Removable, bOnlyCheckModified, pbSettingsModified);
 	ConfigReadCompareInt ("MountVolumesReadOnly", FALSE, &defaultMountOptions.ReadOnly, bOnlyCheckModified, pbSettingsModified);
 
@@ -1198,6 +1200,8 @@ void SaveSettings (HWND hwndDlg)
 		ConfigWriteInt ("UseSecureDesktop",					bUseSecureDesktop);
 		ConfigWriteInt ("EnableIMEInSecureDesktop",			bEnableIMEInSecureDesktop);
 		ConfigWriteInt ("UseLegacyMaxPasswordLength",		bUseLegacyMaxPasswordLength);
+
+		ConfigWriteInt ("BitlockerDriveIcon",				defaultMountOptions.BitlockerDriveIcon);
 
 		ConfigWriteInt ("EnableBackgroundTask",				bEnableBkgTask);
 		ConfigWriteInt ("CloseBackgroundTaskOnNoVolumes",	bCloseBkgTaskWhenNoVolumes);
@@ -5749,14 +5753,16 @@ retry:
 		&& (mountList.ulMountedDrives < (1 << 26))
 		)
 	{
-		// remove any custom label from registry
 		if (prevMountList.ulMountedDrives)
 		{
 			for (i = 0; i < 26; i++)
 			{
-				if ((prevMountList.ulMountedDrives & (1 << i)) && (!(mountList.ulMountedDrives & (1 << i))) && IsNullTerminateString (prevMountList.wszLabel[i], 33) && wcslen (prevMountList.wszLabel[i]))
+				if ((prevMountList.ulMountedDrives & (1 << i)) && (!(mountList.ulMountedDrives & (1 << i))))
 				{
-					UpdateDriveCustomLabel (i, prevMountList.wszLabel[i], FALSE);
+					if (IsNullTerminateString(prevMountList.wszLabel[i], 33) && wcslen(prevMountList.wszLabel[i])) // remove any custom label from registry
+						UpdateDriveCustomLabel(i, prevMountList.wszLabel[i], FALSE);
+					
+					UpdateDriveIcon(i, FALSE); // since we're dismounting all volumes, remove all registry shell icons
 				}
 			}
 		}

@@ -5973,6 +5973,50 @@ BOOL UpdateDriveCustomLabel (int driveNo, wchar_t* effectiveLabel, BOOL bSetValu
 	return (ERROR_SUCCESS == lStatus)? TRUE : FALSE;
 }
 
+BOOL UpdateDriveIcon(int driveNo, BOOL bSetIcon)
+{
+	// HKEY_CURRENT_USER\SOFTWARE\Classes\Applications\Explorer.exe\Drives\{DriveLetter}\DefaultIcon
+
+	HKEY hKey;
+	LSTATUS lStatus;
+
+	wchar_t wszRegPath[MAX_PATH];
+	wchar_t driveStr[] = { L'A' + (wchar_t)driveNo, 0 };
+
+	wchar_t wszEncryptedDriveIcon[] = { L"%SystemRoot%\\system32\\imageres.dll,209" }; // Windows 10
+	DWORD cbIconLen = (DWORD)((wcslen(wszEncryptedDriveIcon) + 1) * sizeof(wchar_t));
+
+	StringCbPrintfW(wszRegPath, sizeof(wszRegPath), L"SOFTWARE\\Classes\\Applications\\Explorer.exe\\Drives\\%s\\DefaultIcon", driveStr);
+
+	if (bSetIcon)
+		lStatus = RegCreateKeyExW(HKEY_CURRENT_USER, wszRegPath, NULL, NULL, 0,
+			KEY_READ | KEY_WRITE | KEY_SET_VALUE, NULL, &hKey, NULL);
+	else
+		lStatus = RegOpenKeyExW(HKEY_CURRENT_USER, wszRegPath, 0, KEY_READ | KEY_WRITE | KEY_SET_VALUE, &hKey);
+
+	if (ERROR_SUCCESS == lStatus)
+	{
+		if (bSetIcon)
+			lStatus = RegSetValueExW(hKey, NULL, NULL, REG_SZ, (LPCBYTE)wszEncryptedDriveIcon, cbIconLen);
+		else
+		{
+			StringCbPrintfW(wszRegPath, sizeof(wszRegPath), L"SOFTWARE\\Classes\\Applications\\Explorer.exe\\Drives\\%s", driveStr);
+			lStatus = RegOpenKeyExW(HKEY_CURRENT_USER, wszRegPath, 0, KEY_READ | KEY_WRITE | KEY_SET_VALUE, &hKey);
+			if (ERROR_SUCCESS == lStatus)
+			{
+				lStatus = RegDeleteKeyW(hKey, L"DefaultIcon");
+				RegCloseKey(hKey);
+			}
+
+			// delete drive letter of nothing else is present under it
+			RegDeleteKeyW(HKEY_CURRENT_USER, wszRegPath);
+		}
+		RegCloseKey(hKey);
+	}
+
+	return (ERROR_SUCCESS == lStatus) ? TRUE : FALSE;
+}
+
 wstring GetUserFriendlyVersionString (int version)
 {
 	wchar_t szTmp [64];
@@ -8413,8 +8457,13 @@ int DriverUnmountVolume (HWND hwndDlg, int nDosDriveNo, BOOL forced)
 		handleWin32Error (hwndDlg, SRC_POS);
 		return 1;
 	}
-	else if ((unmount.nReturnCode == ERR_SUCCESS) && bDriverSetLabel && wszLabel[0])
-		UpdateDriveCustomLabel (nDosDriveNo, wszLabel, FALSE);
+	else if (unmount.nReturnCode == ERR_SUCCESS)
+	{
+		if (bDriverSetLabel && wszLabel[0])
+			UpdateDriveCustomLabel(nDosDriveNo, wszLabel, FALSE);
+
+		UpdateDriveIcon(nDosDriveNo, FALSE);
+	}
 
 #ifdef TCMOUNT
 
@@ -9281,6 +9330,11 @@ retry:
 	{
 		// try setting the drive label on user-mode using registry
 		UpdateDriveCustomLabel (driveNo, mount.wszLabel, TRUE);
+	}
+
+	if (mountOptions->BitlockerDriveIcon)
+	{
+		UpdateDriveIcon(driveNo, TRUE);
 	}
 
 	ResetWrongPwdRetryCount ();
