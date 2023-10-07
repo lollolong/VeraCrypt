@@ -3652,6 +3652,8 @@ BOOL CALLBACK MountOptionsDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM
 				mountOptions->Removable ? BST_CHECKED : BST_UNCHECKED, 0);
 			SendDlgItemMessage (hwndDlg, IDC_DISABLE_MOUNT_MANAGER, BM_SETCHECK,
 				mountOptions->DisableMountManager ? BST_CHECKED : BST_UNCHECKED, 0);
+			SendDlgItemMessage(hwndDlg, IDC_EXPLORER_BITLOCKER_DRIVE_ICON, BM_SETCHECK,
+				mountOptions->BitlockerDriveIcon ? BST_CHECKED : BST_UNCHECKED, 0);
 
 			SendDlgItemMessage (hwndDlg, IDC_PROTECT_HIDDEN_VOL, BM_SETCHECK,
 				mountOptions->ProtectHiddenVolume ? BST_CHECKED : BST_UNCHECKED, 0);
@@ -3672,6 +3674,11 @@ BOOL CALLBACK MountOptionsDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM
 			protect = IsButtonChecked (GetDlgItem (hwndDlg, IDC_DISABLE_MOUNT_MANAGER));
 			EnableWindow (GetDlgItem (hwndDlg, IDC_VOLUME_LABEL), !protect);
 			EnableWindow (GetDlgItem (hwndDlg, IDT_VOLUME_LABEL), !protect);
+			EnableWindow(GetDlgItem(hwndDlg, IDC_EXPLORER_BITLOCKER_DRIVE_ICON), !protect);
+
+			CheckDlgButton(hwndDlg, IDC_EXPLORER_BITLOCKER_DRIVE_ICON,
+				protect ? BST_UNCHECKED : defaultMountOptions.BitlockerDriveIcon ? BST_CHECKED : BST_UNCHECKED);
+
 
 			/* Add PRF algorithm list for hidden volume password */
 			HWND hComboBox = GetDlgItem (hwndDlg, IDC_PKCS5_PRF_ID);
@@ -3831,6 +3838,7 @@ BOOL CALLBACK MountOptionsDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM
 			mountOptions->ReadOnly = IsButtonChecked (GetDlgItem (hwndDlg, IDC_MOUNT_READONLY));
 			mountOptions->Removable = IsButtonChecked (GetDlgItem (hwndDlg, IDC_MOUNT_REMOVABLE));
 			mountOptions->DisableMountManager = IsButtonChecked (GetDlgItem (hwndDlg, IDC_DISABLE_MOUNT_MANAGER));
+			mountOptions->BitlockerDriveIcon = IsButtonChecked (GetDlgItem (hwndDlg, IDC_EXPLORER_BITLOCKER_DRIVE_ICON));
 			mountOptions->ProtectHiddenVolume = IsButtonChecked (GetDlgItem (hwndDlg, IDC_PROTECT_HIDDEN_VOL));
 			mountOptions->PartitionInInactiveSysEncScope = IsButtonChecked (GetDlgItem (hwndDlg, IDC_MOUNT_SYSENC_PART_WITHOUT_PBA));
 			mountOptions->UseBackupHeader = IsButtonChecked (GetDlgItem (hwndDlg, IDC_USE_EMBEDDED_HEADER_BAK));
@@ -3881,6 +3889,11 @@ BOOL CALLBACK MountOptionsDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM
 
 			if (lw == IDC_DISABLE_MOUNT_MANAGER)
 			{
+				CheckDlgButton(hwndDlg, IDC_EXPLORER_BITLOCKER_DRIVE_ICON, 
+					IsButtonChecked(GetDlgItem(hwndDlg, IDC_DISABLE_MOUNT_MANAGER)) ? BST_UNCHECKED : 
+					defaultMountOptions.BitlockerDriveIcon ? BST_CHECKED : BST_UNCHECKED);
+
+				EnableWindow (GetDlgItem (hwndDlg, IDC_EXPLORER_BITLOCKER_DRIVE_ICON), !IsButtonChecked (GetDlgItem(hwndDlg, IDC_DISABLE_MOUNT_MANAGER)));
 				EnableWindow (GetDlgItem (hwndDlg, IDC_VOLUME_LABEL), !IsButtonChecked (GetDlgItem (hwndDlg, IDC_DISABLE_MOUNT_MANAGER)));
 				EnableWindow (GetDlgItem (hwndDlg, IDT_VOLUME_LABEL), !IsButtonChecked (GetDlgItem (hwndDlg, IDC_DISABLE_MOUNT_MANAGER)));
 			}
