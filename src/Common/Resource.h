@@ -221,6 +221,7 @@
 #define IDC_LINK_KEYFILES_EXTENSIONS_WARNING 5144
 #define IDC_DISABLE_MEMORY_PROTECTION   5145
 #define IDC_DISABLE_MEMORY_PROTECTION_HELP   5146
+#define IDC_EXPLORER_BITLOCKER_DRIVE_ICON   5147
 
 // Next default values for new objects
 // 
@@ -229,7 +230,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        578
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         5147
+#define _APS_NEXT_CONTROL_VALUE         5148
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

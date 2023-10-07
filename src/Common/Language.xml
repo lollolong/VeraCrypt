@@ -172,6 +172,7 @@
     <entry lang="en" key="IDC_PREF_WIPE_CACHE_ON_AUTOUNMOUNT">Wipe cached passwords on auto-unmount</entry>
     <entry lang="en" key="IDC_PREF_WIPE_CACHE_ON_EXIT">Wipe cached passwords on exit</entry>
     <entry lang="en" key="IDC_PREF_EXPLORER_BITLOCKER_DRIVE_ICON">Bitlocker drive icon</entry>
+    <entry lang="en" key="IDC_EXPLORER_BITLOCKER_DRIVE_ICON">Bitlocker drive icon</entry>
     <entry lang="en" key="IDC_PRESERVE_TIMESTAMPS">Preserve modification timestamp of file containers</entry>
     <entry lang="en" key="IDC_RESET_HOTKEYS">Reset</entry>
     <entry lang="en" key="IDC_SELECT_DEVICE">Select D&amp;evice...</entry>
