@@ -5981,12 +5981,22 @@ BOOL UpdateDriveIcon(int driveNo, BOOL bSetIcon)
 	LSTATUS lStatus;
 
 	wchar_t wszRegPath[MAX_PATH];
+	wchar_t wszEncryptedDriveIcon[MAX_PATH];
 	wchar_t driveStr[] = { L'A' + (wchar_t)driveNo, 0 };
 
-	wchar_t wszEncryptedDriveIcon[] = { L"%SystemRoot%\\system32\\imageres.dll,209" }; // Windows 10
-	DWORD cbIconLen = (DWORD)((wcslen(wszEncryptedDriveIcon) + 1) * sizeof(wchar_t));
+	int iShellIconId = -1;
 
+	// TODO: Windows 11 - iShellIconId 210
+
+	if (IsOSAtLeast(WIN_10))
+		iShellIconId = 209;
+	else if (IsOSAtLeast(WIN_7))
+		iShellIconId = 208;
+
+	StringCbPrintfW(wszEncryptedDriveIcon, sizeof(wszEncryptedDriveIcon), L"%%SystemRoot%%\\system32\\imageres.dll,%i", iShellIconId);
 	StringCbPrintfW(wszRegPath, sizeof(wszRegPath), L"SOFTWARE\\Classes\\Applications\\Explorer.exe\\Drives\\%s\\DefaultIcon", driveStr);
+
+	DWORD cbIconLen = (DWORD)((wcslen(wszEncryptedDriveIcon) + 1) * sizeof(wchar_t));
 
 	if (bSetIcon)
 		lStatus = RegCreateKeyExW(HKEY_CURRENT_USER, wszRegPath, NULL, NULL, 0,
