@@ -3439,7 +3439,7 @@ BOOL CALLBACK PreferencesDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM 
 			SendMessage (GetDlgItem (hwndDlg, IDC_USE_LEGACY_MAX_PASSWORD_LENGTH), BM_SETCHECK,
 				bUseLegacyMaxPasswordLength ? BST_CHECKED:BST_UNCHECKED, 0);
 
-			SendMessage(GetDlgItem(hwndDlg, IDC_EXPLORER_BITLOCKER_DRIVE_ICON), BM_SETCHECK,
+			SendMessage(GetDlgItem(hwndDlg, IDC_PREF_EXPLORER_BITLOCKER_DRIVE_ICON), BM_SETCHECK,
 				defaultMountOptions.BitlockerDriveIcon ? BST_CHECKED : BST_UNCHECKED, 0);
 
 			SendMessage (GetDlgItem (hwndDlg, IDC_PREF_TEMP_CACHE_ON_MULTIPLE_MOUNT), BM_SETCHECK,
@@ -3559,7 +3559,7 @@ BOOL CALLBACK PreferencesDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM 
 			bHideWaitingDialog = IsButtonChecked (GetDlgItem (hwndDlg, IDC_HIDE_WAITING_DIALOG));
 			bUseSecureDesktop = IsButtonChecked (GetDlgItem (hwndDlg, IDC_SECURE_DESKTOP_PASSWORD_ENTRY));
 			bUseLegacyMaxPasswordLength = IsButtonChecked (GetDlgItem (hwndDlg, IDC_USE_LEGACY_MAX_PASSWORD_LENGTH));
-			defaultMountOptions.BitlockerDriveIcon = IsButtonChecked (GetDlgItem (hwndDlg, IDC_EXPLORER_BITLOCKER_DRIVE_ICON));
+			defaultMountOptions.BitlockerDriveIcon = IsButtonChecked (GetDlgItem (hwndDlg, IDC_PREF_EXPLORER_BITLOCKER_DRIVE_ICON));
 			bCacheDuringMultipleMount	= IsButtonChecked (GetDlgItem (hwndDlg, IDC_PREF_TEMP_CACHE_ON_MULTIPLE_MOUNT));
 			bWipeCacheOnExit				= IsButtonChecked (GetDlgItem (hwndDlg, IDC_PREF_WIPE_CACHE_ON_EXIT));
 			bWipeCacheOnAutoDismount		= IsButtonChecked (GetDlgItem (hwndDlg, IDC_PREF_WIPE_CACHE_ON_AUTODISMOUNT));

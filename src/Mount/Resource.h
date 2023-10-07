@@ -200,7 +200,7 @@
 #define IDC_FORCE_VERACRYPT_FIRST_BOOT_ENTRY 1178
 #define IDC_ENABLE_EMV_SUPPORT          1179
 #define IDT_EMV_OPTIONS                 1180
-#define IDC_EXPLORER_BITLOCKER_DRIVE_ICON 	1181
+#define IDC_PREF_EXPLORER_BITLOCKER_DRIVE_ICON 	1181
 #define IDM_HELP                        40001
 #define IDM_ABOUT                       40002
 #define IDM_UNMOUNT_VOLUME              40003
