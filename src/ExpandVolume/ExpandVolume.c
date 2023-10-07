@@ -104,6 +104,7 @@ int MountVolTemp (HWND hwndDlg, wchar_t *volumePath, int *driveNo, Password *pas
 	mountOptions.PreserveTimestamp = bPreserveTimestamp;
 	mountOptions.PartitionInInactiveSysEncScope = FALSE;
 	mountOptions.UseBackupHeader = FALSE;
+	mountOptions.BitlockerDriveIcon = FALSE;
 
 	if (MountVolume (hwndDlg, *driveNo, volumePath, password, pkcs5, pim, FALSE, FALSE, TRUE, &mountOptions, FALSE, FALSE) < 1)
 	{

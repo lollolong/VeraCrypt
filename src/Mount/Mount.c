@@ -1000,6 +1000,8 @@ void LoadSettingsAndCheckModified (HWND hwndDlg, BOOL bOnlyCheckModified, BOOL* 
 
 	ConfigReadCompareInt ("UseLegacyMaxPasswordLength", FALSE, &bUseLegacyMaxPasswordLength, bOnlyCheckModified, pbSettingsModified);
 
+	ConfigReadCompareInt ("BitlockerDriveIcon", FALSE, &defaultMountOptions.BitlockerDriveIcon, bOnlyCheckModified, pbSettingsModified);
+
 	ConfigReadCompareInt ("MountVolumesRemovable", FALSE, &defaultMountOptions.Removable, bOnlyCheckModified, pbSettingsModified);
 	ConfigReadCompareInt ("MountVolumesReadOnly", FALSE, &defaultMountOptions.ReadOnly, bOnlyCheckModified, pbSettingsModified);
 
@@ -1158,6 +1160,8 @@ void SaveSettings (HWND hwndDlg)
 		ConfigWriteInt ("HideWaitingDialog",				bHideWaitingDialog);
 		ConfigWriteInt ("UseSecureDesktop",					bUseSecureDesktop);
 		ConfigWriteInt ("UseLegacyMaxPasswordLength",		bUseLegacyMaxPasswordLength);
+
+		ConfigWriteInt ("BitlockerDriveIcon",				defaultMountOptions.BitlockerDriveIcon);
 
 		ConfigWriteInt ("EnableBackgroundTask",				bEnableBkgTask);
 		ConfigWriteInt ("CloseBackgroundTaskOnNoVolumes",	bCloseBkgTaskWhenNoVolumes);
@@ -3435,6 +3439,9 @@ BOOL CALLBACK PreferencesDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM 
 			SendMessage (GetDlgItem (hwndDlg, IDC_USE_LEGACY_MAX_PASSWORD_LENGTH), BM_SETCHECK,
 				bUseLegacyMaxPasswordLength ? BST_CHECKED:BST_UNCHECKED, 0);
 
+			SendMessage(GetDlgItem(hwndDlg, IDC_EXPLORER_BITLOCKER_DRIVE_ICON), BM_SETCHECK,
+				defaultMountOptions.BitlockerDriveIcon ? BST_CHECKED : BST_UNCHECKED, 0);
+
 			SendMessage (GetDlgItem (hwndDlg, IDC_PREF_TEMP_CACHE_ON_MULTIPLE_MOUNT), BM_SETCHECK,
 						bCacheDuringMultipleMount ? BST_CHECKED:BST_UNCHECKED, 0);
 
@@ -3552,6 +3559,7 @@ BOOL CALLBACK PreferencesDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM 
 			bHideWaitingDialog = IsButtonChecked (GetDlgItem (hwndDlg, IDC_HIDE_WAITING_DIALOG));
 			bUseSecureDesktop = IsButtonChecked (GetDlgItem (hwndDlg, IDC_SECURE_DESKTOP_PASSWORD_ENTRY));
 			bUseLegacyMaxPasswordLength = IsButtonChecked (GetDlgItem (hwndDlg, IDC_USE_LEGACY_MAX_PASSWORD_LENGTH));
+			defaultMountOptions.BitlockerDriveIcon = IsButtonChecked (GetDlgItem (hwndDlg, IDC_EXPLORER_BITLOCKER_DRIVE_ICON));
 			bCacheDuringMultipleMount	= IsButtonChecked (GetDlgItem (hwndDlg, IDC_PREF_TEMP_CACHE_ON_MULTIPLE_MOUNT));
 			bWipeCacheOnExit				= IsButtonChecked (GetDlgItem (hwndDlg, IDC_PREF_WIPE_CACHE_ON_EXIT));
 			bWipeCacheOnAutoDismount		= IsButtonChecked (GetDlgItem (hwndDlg, IDC_PREF_WIPE_CACHE_ON_AUTODISMOUNT));
@@ -5534,14 +5542,16 @@ retry:
 		&& (mountList.ulMountedDrives < (1 << 26))
 		)
 	{
-		// remove any custom label from registry
 		if (prevMountList.ulMountedDrives)
 		{
 			for (i = 0; i < 26; i++)
 			{
-				if ((prevMountList.ulMountedDrives & (1 << i)) && (!(mountList.ulMountedDrives & (1 << i))) && IsNullTerminateString (prevMountList.wszLabel[i], 33) && wcslen (prevMountList.wszLabel[i]))
+				if ((prevMountList.ulMountedDrives & (1 << i)) && (!(mountList.ulMountedDrives & (1 << i))))
 				{
-					UpdateDriveCustomLabel (i, prevMountList.wszLabel[i], FALSE);
+					if (IsNullTerminateString(prevMountList.wszLabel[i], 33) && wcslen(prevMountList.wszLabel[i])) // remove any custom label from registry
+						UpdateDriveCustomLabel(i, prevMountList.wszLabel[i], FALSE);
+					
+					UpdateDriveIcon(i, FALSE); // since we're dismounting all volumes, remove all registry shell icons
 				}
 			}
 		}

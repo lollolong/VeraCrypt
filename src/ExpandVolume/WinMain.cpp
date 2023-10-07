@@ -318,6 +318,7 @@ void LoadSettings (HWND hwndDlg)
 	defaultMountOptions.RecoveryMode = FALSE;
 	defaultMountOptions.UseBackupHeader =  FALSE;
 	defaultMountOptions.SkipCachedPasswords = FALSE;
+	defaultMountOptions.BitlockerDriveIcon = ConfigReadInt("BitlockerDriveIcon", FALSE);
 
 	mountOptions = defaultMountOptions;
 

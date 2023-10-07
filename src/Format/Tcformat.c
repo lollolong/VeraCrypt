@@ -8033,6 +8033,7 @@ BOOL CALLBACK MainDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 					mountOptions.UseBackupHeader = FALSE;	// This must be FALSE at this point because otherwise we wouldn't be able to detect a legacy volume
 					mountOptions.ReadOnly = TRUE;
 					mountOptions.Removable = ConfigReadInt ("MountVolumesRemovable", FALSE);
+					mountOptions.BitlockerDriveIcon = ConfigReadInt("BitlockerDriveIcon", FALSE);
 
 					// Check that it is not a hidden or legacy volume
 
@@ -9870,6 +9871,7 @@ int MountHiddenVolHost (HWND hwndDlg, wchar_t *volumePath, int *driveNo, Passwor
 	mountOptions.PreserveTimestamp = bPreserveTimestamp;
 	mountOptions.PartitionInInactiveSysEncScope = FALSE;
 	mountOptions.UseBackupHeader = FALSE;
+	mountOptions.BitlockerDriveIcon = ConfigReadInt("BitlockerDriveIcon", FALSE);
 
 	if (MountVolume (hwndDlg, *driveNo, volumePath, password, pkcs5_prf, pim, FALSE, FALSE, TRUE, &mountOptions, FALSE, TRUE) < 1)
 	{
