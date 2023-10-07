@@ -3492,6 +3492,8 @@ static INT_PTR CALLBACK PrefsGeneralTabProc (HWND hDlg, UINT msg, WPARAM wParam,
 			bEnableIMEInSecureDesktop ? BST_CHECKED : BST_UNCHECKED, 0);
 		SendMessage (GetDlgItem (hDlg, IDC_USE_LEGACY_MAX_PASSWORD_LENGTH), BM_SETCHECK,
 			bUseLegacyMaxPasswordLength ? BST_CHECKED : BST_UNCHECKED, 0);
+		SendMessage (GetDlgItem (hDlg, IDC_PREF_EXPLORER_BITLOCKER_DRIVE_ICON), BM_SETCHECK,
+			defaultMountOptions.BitlockerDriveIcon ? BST_CHECKED : BST_UNCHECKED, 0);
 		if (!bUseSecureDesktop)
 		{
 			EnableWindow (GetDlgItem (hDlg, IDC_SECURE_DESKTOP_ENABLE_IME), FALSE);
@@ -3756,6 +3758,7 @@ BOOL CALLBACK PreferencesDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM 
 			bUseSecureDesktop = IsButtonChecked (GetDlgItem (TabDialogs[0], IDC_SECURE_DESKTOP_PASSWORD_ENTRY));
 			bEnableIMEInSecureDesktop = IsButtonChecked (GetDlgItem (TabDialogs[0], IDC_SECURE_DESKTOP_ENABLE_IME));
 			bUseLegacyMaxPasswordLength = IsButtonChecked (GetDlgItem (TabDialogs[0], IDC_USE_LEGACY_MAX_PASSWORD_LENGTH));
+			defaultMountOptions.Removable	= IsButtonChecked (GetDlgItem (TabDialogs[0], IDC_PREF_EXPLORER_BITLOCKER_DRIVE_ICON));
 
 			// Actions Tab
 			bEnableBkgTask				= IsButtonChecked (GetDlgItem (TabDialogs[1], IDC_PREF_BKG_TASK_ENABLE));

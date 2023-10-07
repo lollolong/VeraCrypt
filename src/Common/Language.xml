@@ -171,6 +171,7 @@
     <entry lang="en" key="IDC_PREF_USE_DIFF_TRAY_ICON_IF_VOL_MOUNTED">Use a different taskbar icon when there are mounted volumes</entry>
     <entry lang="en" key="IDC_PREF_WIPE_CACHE_ON_AUTOUNMOUNT">Wipe cached passwords on auto-unmount</entry>
     <entry lang="en" key="IDC_PREF_WIPE_CACHE_ON_EXIT">Wipe cached passwords on exit</entry>
+    <entry lang="en" key="IDC_PREF_EXPLORER_BITLOCKER_DRIVE_ICON">Bitlocker drive icon</entry>
     <entry lang="en" key="IDC_PRESERVE_TIMESTAMPS">Preserve modification timestamp of file containers</entry>
     <entry lang="en" key="IDC_RESET_HOTKEYS">Reset</entry>
     <entry lang="en" key="IDC_SELECT_DEVICE">Select D&amp;evice...</entry>
@@ -1436,7 +1437,6 @@
     <entry lang="en" key="STARTING">Starting</entry>
     <entry lang="en" key="IDC_ENABLE_CPU_RNG">Use CPU hardware random generator as an additional source of entropy</entry>
     <entry lang="en" key="IDC_USE_LEGACY_MAX_PASSWORD_LENGTH">Use legacy maximum password length (64 characters)</entry>
-    <entry lang="en" key="IDC_EXPLORER_BITLOCKER_DRIVE_ICON">Bitlocker drive icon</entry>
     <entry lang="en" key="IDC_ENABLE_RAM_ENCRYPTION">Activate encryption of keys and passwords stored in RAM</entry>
     <entry lang="en" key="IDT_BENCHMARK">Benchmark:</entry>
     <entry lang="en" key="IDC_DISABLE_MOUNT_MANAGER">Only create virtual device without mounting on selected drive letter</entry>

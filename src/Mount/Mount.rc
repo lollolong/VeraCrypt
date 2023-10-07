@@ -79,7 +79,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,150,290,10
     CONTROL         "Use legacy maximum password length (64 characters)",IDC_USE_LEGACY_MAX_PASSWORD_LENGTH,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,164,290,10
-    CONTROL         "Bitlocker drive icon",IDC_EXPLORER_BITLOCKER_DRIVE_ICON,
+    CONTROL         "Bitlocker drive icon",IDC_PREF_EXPLORER_BITLOCKER_DRIVE_ICON,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,178,290,10
 END
 

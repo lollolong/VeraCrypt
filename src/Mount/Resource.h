@@ -206,7 +206,7 @@
 #define IDC_DISABLE_SCREEN_PROTECTION   1181
 #define IDC_PREF_TAB                    1182
 #define IDC_SECURE_DESKTOP_ENABLE_IME   1183
-#define IDC_EXPLORER_BITLOCKER_DRIVE_ICON 	1184
+#define IDC_PREF_EXPLORER_BITLOCKER_DRIVE_ICON 	1184
 #define IDM_HELP                        40001
 #define IDM_ABOUT                       40002
 #define IDM_UNMOUNT_VOLUME              40003
