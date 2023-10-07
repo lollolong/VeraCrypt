@@ -200,6 +200,7 @@
 #define IDC_FORCE_VERACRYPT_FIRST_BOOT_ENTRY 1178
 #define IDC_ENABLE_EMV_SUPPORT          1179
 #define IDT_EMV_OPTIONS                 1180
+#define IDC_EXPLORER_BITLOCKER_DRIVE_ICON 	1181
 #define IDM_HELP                        40001
 #define IDM_ABOUT                       40002
 #define IDM_UNMOUNT_VOLUME              40003
@@ -277,7 +278,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        120
 #define _APS_NEXT_COMMAND_VALUE         40070
-#define _APS_NEXT_CONTROL_VALUE         1181
+#define _APS_NEXT_CONTROL_VALUE         1182
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
