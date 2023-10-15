@@ -10483,6 +10483,7 @@ BOOL MountFavoriteVolumes (HWND hwnd, BOOL systemFavorites, BOOL logOnMount, BOO
 	BOOL bRet = TRUE, status = TRUE;
 	BOOL lastbExplore;
 	BOOL userForcedReadOnly = FALSE;
+	BOOL bMountFavoritesSkipNoHotkeyMount = ((GetAsyncKeyState(VK_SHIFT) < 0 || GetAsyncKeyState(VK_CONTROL) < 0));
 
 	if (ServiceMode)
 	{
@@ -10559,7 +10560,7 @@ BOOL MountFavoriteVolumes (HWND hwnd, BOOL systemFavorites, BOOL logOnMount, BOO
 
 		if (favorite.DisconnectedDevice
 			|| (logOnMount && !favorite.MountOnLogOn)
-			|| (hotKeyMount && favorite.DisableHotkeyMount))
+			|| ((hotKeyMount || bMountFavoritesSkipNoHotkeyMount) && favorite.DisableHotkeyMount))
 		{
 			continue;
 		}
