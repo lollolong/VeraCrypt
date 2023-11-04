@@ -5993,6 +5993,8 @@ BOOL UpdateDriveIcon(int driveNo, BOOL bSetIcon)
 	else if (IsOSAtLeast(WIN_7))
 		iShellIconId = 208;
 
+	// Alternative: %PROGRAMFILES%\\VeraCrypt\\VeraCrypt.exe,2
+
 	StringCbPrintfW(wszEncryptedDriveIcon, sizeof(wszEncryptedDriveIcon), L"%%SystemRoot%%\\system32\\imageres.dll,%i", iShellIconId);
 	StringCbPrintfW(wszRegPath, sizeof(wszRegPath), L"SOFTWARE\\Classes\\Applications\\Explorer.exe\\Drives\\%s\\DefaultIcon", driveStr);
 
