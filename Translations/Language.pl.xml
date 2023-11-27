@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VeraCrypt>
-  <localization prog-version= "1.26.9">
+  <localization prog-version= "1.26.10">
     <language langid="pl" name="Polski" en-name="Polish" version="1.0.0" translators="Mirek Druchowicz, Janusz Zamecki, Sobiesław Antolak, Begina Felicysym" />
     <font lang="pl" class="normal" size="11" face="default" />
     <font lang="pl" class="bold" size="13" face="Arial" />
@@ -1635,6 +1635,9 @@
     <entry lang="pl" key="IDC_LINK_KEYFILES_EXTENSIONS_WARNING">Ważne informacje na temat korzystania z rozszerzeń plików innych dostawców</entry>
     <entry lang="pl" key="IDC_DISABLE_MEMORY_PROTECTION">Wyłącz ochronę pamięci w celu zapewnienia zgodności z narzędziami ułatwień dostępu</entry>
     <entry lang="pl" key="DISABLE_MEMORY_PROTECTION_WARNING">OSTRZEŻENIE: Wyłączenie ochrony pamięci znacznie zmniejsza bezpieczeństwo. Włącz tę opcję TYLKO wtedy, gdy korzystasz z narzędzi ułatwień dostępu, takich jak czytniki ekranu, do interakcji z interfejsem użytkownika VeraCrypt.</entry>
+    <entry lang="pl" key="LINUX_LANGUAGE">Język</entry>
+    <entry lang="pl" key="LINUX_SELECT_SYS_DEFAULT_LANG">Wybierz domyślny język systemu</entry>
+    <entry lang="pl" key="LINUX_RESTART_FOR_LANGUAGE_CHANGE">Aby zmiana języka odniosła skutek, należy ponownie uruchomić VeraCrypt.</entry>
   </localization>
   <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="VeraCrypt">

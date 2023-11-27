@@ -24,6 +24,7 @@
 # SSE41:		Enable SSE4.1 support in compiler
 # NOSSE2:		Disable SEE2 support in compiler
 # WITHGTK3:		Build wxWidgets against GTK3
+# WOLFCRYPT:		Build with wolfCrypt as crypto provider (see Crypto/wolfCrypt.md)
 
 #------ Targets ------
 # all
@@ -145,6 +146,7 @@ export PLATFORM_UNSUPPORTED := 0
 export CPU_ARCH ?= unknown
 export SIMD_SUPPORTED := 0
 export DISABLE_AESNI ?= 0
+export ENABLE_WOLFCRYPT ?= 0
 
 export GCC_GTEQ_440 := 0
 export GCC_GTEQ_430 := 0
@@ -183,6 +185,13 @@ endif
 
 ifeq "$(origin NOAESNI)" "command line"
 	DISABLE_AESNI := 1
+endif
+
+ifeq "$(origin WOLFCRYPT)" "command line"
+	ENABLE_WOLFCRYPT := 1
+	C_CXX_FLAGS += -DWOLFCRYPT_BACKEND
+	export LIBS += -lwolfssl
+	export LD_LIBRARY_PATH=/usr/local/lib
 endif
 
 #------ Linux configuration ------
@@ -498,7 +507,7 @@ WX_CONFIGURE_FLAGS += --disable-protocol --disable-protocols --disable-url --dis
 	--disable-gif --disable-pcx --disable-tga --disable-iff --disable-gif --disable-pnm --disable-svg \
 	--without-expat --without-libtiff --without-libjpeg --without-libpng -without-regex --without-zlib
 	
-ifeq "$(PLATFORM)" "Linux"
+ifneq (,$(filter Linux FreeBSD,$(PLATFORM)))
 WX_CONFIGURE_FLAGS += --disable-tooltips
 ifneq "$(origin WITHGTK3)" "command line"
 	WX_CONFIGURE_FLAGS += --disable-graphics_ctx
