@@ -37,6 +37,19 @@
 
 namespace VeraCrypt
 {
+	class OpenOuterVolumeFunctor : public Functor
+	{
+		public:
+		OpenOuterVolumeFunctor (const DirectoryPath &outerVolumeMountPoint) : OuterVolumeMountPoint (outerVolumeMountPoint) { }
+
+		virtual void operator() ()
+		{
+			Gui->OpenExplorerWindow (OuterVolumeMountPoint);
+		}
+
+		DirectoryPath OuterVolumeMountPoint;
+	};
+
 #ifdef TC_MACOSX
 
 	bool VolumeCreationWizard::ProcessEvent(wxEvent& event)
@@ -338,18 +351,6 @@ namespace VeraCrypt
 					return new InfoWizardPage (GetPageParent());
 				}
 
-				struct OpenOuterVolumeFunctor : public Functor
-				{
-					OpenOuterVolumeFunctor (const DirectoryPath &outerVolumeMountPoint) : OuterVolumeMountPoint (outerVolumeMountPoint) { }
-
-					virtual void operator() ()
-					{
-						Gui->OpenExplorerWindow (OuterVolumeMountPoint);
-					}
-
-					DirectoryPath OuterVolumeMountPoint;
-				};
-
 				InfoWizardPage *page = new InfoWizardPage (GetPageParent(), LangString["LINUX_OPEN_OUTER_VOL"],
 					shared_ptr <Functor> (new OpenOuterVolumeFunctor (MountedOuterVolume->MountPoint)));
 
@@ -390,12 +391,12 @@ namespace VeraCrypt
 		event.Skip();
 		if (!IsWorkInProgress() && RandomNumberGenerator::IsRunning())
 		{
-			RandomNumberGenerator::AddToPool (ConstBufferPtr (reinterpret_cast <byte *> (&event), sizeof (event)));
+			RandomNumberGenerator::AddToPool (ConstBufferPtr (reinterpret_cast <uint8 *> (&event), sizeof (event)));
 
 			long coord = event.GetX();
-			RandomNumberGenerator::AddToPool (ConstBufferPtr (reinterpret_cast <byte *> (&coord), sizeof (coord)));
+			RandomNumberGenerator::AddToPool (ConstBufferPtr (reinterpret_cast <uint8 *> (&coord), sizeof (coord)));
 			coord = event.GetY();
-			RandomNumberGenerator::AddToPool (ConstBufferPtr (reinterpret_cast <byte *> (&coord), sizeof (coord)));
+			RandomNumberGenerator::AddToPool (ConstBufferPtr (reinterpret_cast <uint8 *> (&coord), sizeof (coord)));
 
 			VolumeCreationProgressWizardPage *page = dynamic_cast <VolumeCreationProgressWizardPage *> (GetCurrentPage());
 			if (page)
@@ -442,7 +443,7 @@ namespace VeraCrypt
 		if (!IsWorkInProgress())
 		{
 			wxLongLong time = wxGetLocalTimeMillis();
-			RandomNumberGenerator::AddToPool (ConstBufferPtr (reinterpret_cast <byte *> (&time), sizeof (time)));
+			RandomNumberGenerator::AddToPool (ConstBufferPtr (reinterpret_cast <uint8 *> (&time), sizeof (time)));
 		}
 	}
 

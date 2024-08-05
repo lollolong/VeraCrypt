@@ -32,6 +32,15 @@
 
 namespace VeraCrypt
 {
+	class AdminPasswordRequestHandler : public GetStringFunctor
+	{
+		public:
+		virtual void operator() (string &str)
+		{
+			throw ElevationFailed (SRC_POS, "sudo", 1, "");
+		}
+	};
+
 	UserInterface::UserInterface ()
 	{
 	}
@@ -558,14 +567,6 @@ namespace VeraCrypt
 		}
 		else
 		{
-			struct AdminPasswordRequestHandler : public GetStringFunctor
-			{
-				virtual void operator() (string &str)
-				{
-					throw ElevationFailed (SRC_POS, "sudo", 1, "");
-				}
-			};
-
 			Core->SetAdminPasswordCallback (shared_ptr <GetStringFunctor> (new AdminPasswordRequestHandler));
 		}
 
@@ -651,6 +652,7 @@ namespace VeraCrypt
 
 		bool protectedVolumeMounted = false;
 		bool legacyVolumeMounted = false;
+		bool vulnerableVolumeMounted = false;
 
 		foreach_ref (const HostDevice &device, devices)
 		{
@@ -693,6 +695,10 @@ namespace VeraCrypt
 
 				if (newMountedVolumes.back()->EncryptionAlgorithmMinBlockSize == 8)
 					legacyVolumeMounted = true;
+
+				if (newMountedVolumes.back()->MasterKeyVulnerable)
+					vulnerableVolumeMounted = true;
+				
 			}
 			catch (DriverError&) { }
 			catch (MissingVolumeData&) { }
@@ -707,6 +713,9 @@ namespace VeraCrypt
 		}
 		else
 		{
+			if (vulnerableVolumeMounted)
+				ShowWarning ("ERR_XTS_MASTERKEY_VULNERABLE");
+
 			if (someVolumesShared)
 				ShowWarning ("DEVICE_IN_USE_INFO");
 
@@ -740,10 +749,12 @@ namespace VeraCrypt
 
 			favorite.ToMountOptions (options);
 
+			bool mountPerformed = false;
 			if (Preferences.NonInteractive)
 			{
 				BusyScope busy (this);
 				newMountedVolumes.push_back (Core->MountVolume (options));
+				mountPerformed = true;
 			}
 			else
 			{
@@ -751,6 +762,7 @@ namespace VeraCrypt
 				{
 					BusyScope busy (this);
 					newMountedVolumes.push_back (Core->MountVolume (options));
+					mountPerformed = true;
 				}
 				catch (...)
 				{
@@ -768,6 +780,9 @@ namespace VeraCrypt
 					newMountedVolumes.push_back (volume);
 				}
 			}
+			
+			if (mountPerformed && newMountedVolumes.back()->MasterKeyVulnerable)
+				ShowWarning ("ERR_XTS_MASTERKEY_VULNERABLE");
 		}
 
 		if (!newMountedVolumes.empty() && GetPreferences().CloseSecurityTokenSessionsAfterMount)
@@ -803,6 +818,9 @@ namespace VeraCrypt
 				throw_err (LangString["FILE_IN_USE_FAILED"]);
 			}
 		}
+
+		if (volume->MasterKeyVulnerable)
+			ShowWarning ("ERR_XTS_MASTERKEY_VULNERABLE");
 
 		if (volume->EncryptionAlgorithmMinBlockSize == 8)
 			ShowWarning ("WARN_64_BIT_BLOCK_CIPHER");
