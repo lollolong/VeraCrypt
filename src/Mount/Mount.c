@@ -703,7 +703,9 @@ void EnableDisableButtons (HWND hwndDlg)
 
 	case TC_MLIST_ITEM_FREE:
 	default:
+#if !defined(VCEXPANDER)
 		EnableSplitButton(hwndDlg, IDOK);
+#endif
 		SetWindowTextW (hOKButton, GetString ("MOUNT_BUTTON"));
 		// Invalid the button IDOK so that it will be redrawn
 		InvalidateRect (hOKButton, NULL, TRUE);
@@ -8158,6 +8160,7 @@ BOOL CALLBACK MainDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 				}
 			}
 		}
+#if !defined(VCEXPANDER)
 		else
 		{
 			LPNMHDR pnmh = (LPNMHDR)lParam;
@@ -8170,6 +8173,7 @@ BOOL CALLBACK MainDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 				DestroyMenu(hmenu);
 			}
 		}
+#endif
 		return 0;
 
 	case WM_ERASEBKGND:
