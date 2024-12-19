@@ -541,7 +541,7 @@ BOOL GetSysDevicePaths (HWND hwndDlg);
 BOOL DoDriverInstall (HWND hwndDlg);
 int OpenVolume (OpenVolumeContext *context, const wchar_t *volumePath, Password *password, int pkcs5_prf, int pim, BOOL write, BOOL preserveTimestamps, BOOL useBackupHeader);
 void CloseVolume (OpenVolumeContext *context);
-int ReEncryptVolumeHeader (HWND hwndDlg, char *buffer, BOOL bBoot, CRYPTO_INFO *cryptoInfo, Password *password, int pim, BOOL wipeMode);
+int ReEncryptVolumeHeader (HWND hwndDlg, unsigned char *buffer, BOOL bBoot, CRYPTO_INFO *cryptoInfo, Password *password, int pim, BOOL wipeMode);
 BOOL IsPagingFileActive (BOOL checkNonWindowsPartitionsOnly);
 BOOL IsPagingFileWildcardActive ();
 BOOL DisablePagingFile ();
@@ -595,10 +595,32 @@ BitLockerEncryptionStatus GetBitLockerEncryptionStatus(WCHAR driveLetter);
 BOOL IsTestSigningModeEnabled ();
 DWORD SendServiceNotification (DWORD dwNotificationCmd);
 DWORD FastResizeFile (const wchar_t* filePath, __int64 fileSize);
-#ifdef _WIN64
+#if !defined(SETUP)
 void GetAppRandomSeed (unsigned char* pbRandSeed, size_t cbRandSeed);
 #endif
 BOOL IsInternetConnected();
+#if defined(SETUP) && !defined (PORTABLE)
+typedef struct _SECURITY_INFO_BACKUP {
+	PSID pOrigOwner;
+	PSID pOrigGroup;
+	PACL pOrigDacl;
+	PACL pOrigSacl;
+	PSECURITY_DESCRIPTOR pOrigSD;
+} SECURITY_INFO_BACKUP, * PSECURITY_INFO_BACKUP;
+
+typedef struct _PRIVILEGE_STATE {
+	BOOL takeOwnership;
+	BOOL backup;
+	BOOL restore;
+} PRIVILEGE_STATE, * PPRIVILEGE_STATE;
+
+BOOL RestoreSecurityInfo(const wchar_t* filePath, PSECURITY_INFO_BACKUP pBackup);
+void FreeSecurityBackup(PSECURITY_INFO_BACKUP pBackup);
+BOOL SaveCurrentPrivilegeState(PPRIVILEGE_STATE state);
+BOOL RestorePrivilegeState(const PPRIVILEGE_STATE state);
+BOOL EnableRequiredSetupPrivileges(PPRIVILEGE_STATE currentState);
+BOOL ModifyFileSecurityPermissions(const wchar_t* filePath, PSECURITY_INFO_BACKUP pBackup);
+#endif
 #ifdef __cplusplus
 }
 
