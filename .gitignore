@@ -88,6 +88,24 @@ src/ExpandVolume/x64
 src/ExpandVolume/ARM64
 src/ExpandVolume/*.tlb
 
+src/COMReg/Debug
+src/COMReg/Release
+src/COMReg/x64
+src/COMReg/ARM64
+src/COMReg/*.tlb
+
+src/FormatDLL/Debug
+src/FormatDLL/Release
+src/FormatDLL/x64
+src/FormatDLL/ARM64
+src/FormatDLL/*.tlb
+
+src/x64/Debug
+src/x64/Release
+
+src/ARM64/Debug
+src/ARM64/Release
+
 src/Format/Debug
 src/Format/Release
 src/Format/x64
